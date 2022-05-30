@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>106005645174-mctd1vmm3pl3omk5ookm5fqtp5q1j82k.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.106005645174-mctd1vmm3pl3omk5ookm5fqtp5q1j82k</string>
+	<key>API_KEY</key>
+	<string>AIzaSyASwJr-6HtUURtKx1F0oU7fOyO7McbBE0M</string>
+	<key>GCM_SENDER_ID</key>
+	<string>106005645174</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.TomoJ.CryptoAppSwiftUI</string>
+	<key>PROJECT_ID</key>
+	<string>cryptoappswiftui</string>
+	<key>STORAGE_BUCKET</key>
+	<string>cryptoappswiftui.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:106005645174:ios:2f42c7acc637556bbd5c57</string>
+</dict>
+</plist>
