@@ -60,22 +60,47 @@ class AppViewModel: ObservableObject {
         }
     }
     
-    func buyTransactions(option: CheckoutOption, coinsAmount: Double, symbol: String, vMoney: Double) {
-        let portfolioModel = PortfolioModel(symbol: symbol, virtualAmount: vMoney, coins: coinsAmount)
-        let transactionModel = TransactionModel(transactionType: .bought, virtualAmount: vMoney, coinsBought: coinsAmount, date: Date.now)
+    func buyTransactions(coinsAmount: Double, symbol: String, vMoney: Double, boughtAt: Double) {
+        let portfolioModel = PortfolioModel(symbol: symbol, virtualAmount: vMoney, coins: coinsAmount, currentPrice: boughtAt)
+        let transactionModel = TransactionModel(transactionType: .bought, symbol: symbol,virtualAmount: vMoney, coinsTransfered: coinsAmount, date: Date.now)
         
-        firebaseService.updateBuyOptionUserData(portfolio: portfolioModel, transaction: transactionModel, userMail: currentUser!.email) { [weak self] isSaved , message in
-            
-            guard let self = self else { return }
-            
-            if let user = isSaved {
-                self.currentUser = user
-                self.alertMessage = message
-            } else {
-                self.alertMessage = message
+        if let email = currentUser?.email {
+            firebaseService.updateBuyOptionUserData(portfolio: portfolioModel, transaction: transactionModel, userMail: email) { [weak self] isSaved , message in
+                
+                guard let self = self else { return }
+                
+                if let user = isSaved {
+                    self.currentUser = user
+                    self.alertMessage = message
+                } else {
+                    self.alertMessage = message
+                }
+                
+                self.isShowingAlert = true
             }
-            
-            self.isShowingAlert = true
+        }
+    }
+    
+    func sellTransaction(coinsAmount: Double, symbol: String, vMoney: Double, soldAt: Double) {
+        // coins sold treba za transakciju, napravit isto kao ovo gore update i oduzet tamo pare, rjesit to i na prvom screenu
+        // onda settings pie napravit, transaction history, leaderBoard ko ima najvise para, logout
+        let portfolioModel = PortfolioModel(symbol: symbol, virtualAmount: vMoney, coins: coinsAmount, currentPrice: soldAt)
+        let transactionModel = TransactionModel(transactionType: .sold, symbol: symbol, virtualAmount: vMoney, coinsTransfered: coinsAmount, date: Date.now)
+        
+        if let email = currentUser?.email {
+            firebaseService.updateSoldOptionUserData(portfolio: portfolioModel, transaction: transactionModel, userMail: email) { [weak self] isSaved, message in
+                
+                guard let self = self else { return }
+                
+                if let user = isSaved {
+                    self.currentUser = user
+                    self.alertMessage = message
+                } else {
+                    self.alertMessage = message
+                }
+                
+                self.isShowingAlert = true
+            }
         }
     }
 }

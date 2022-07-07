@@ -24,9 +24,15 @@ struct HomeView: View {
                 Text("Current Balance")
                     .foregroundColor(.gray)
                 
-                Text("$ \(sharedModel.currentUser?.money ?? 0)")
-                    .font(.system(size: 30))
-                    .foregroundColor(.white)
+                if let userMoney = sharedModel.currentUser?.money {
+                    Text("$ \(String(format: "%.2f", userMoney))")
+                        .font(.system(size: 30))
+                        .foregroundColor(.white)
+                } else {
+                    Text("$ 0")
+                        .font(.system(size: 30))
+                        .foregroundColor(.white)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .center)
             .frame(height: 220)
@@ -92,7 +98,7 @@ struct HomeView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 20) {
                             ForEach(portfolio, id: \.symbol) { coin in
-                                makeMyPortfolioCoinView()
+                                makeMyPortfolioCoinView(coin: coin)
                             }
                         }
                     }
@@ -138,20 +144,20 @@ struct HomeView: View {
     }
     
     @ViewBuilder
-    private func makeMyPortfolioCoinView() -> some View {
+    private func makeMyPortfolioCoinView(coin: PortfolioModel) -> some View {
         HStack() {
             VStack() {
-                Text("\(sharedModel.coins?.first?.name ?? "")")
+                Text("\(sharedModel.coins?.first(where: { $0.symbol == coin.symbol })?.name ?? "")")
                     .font(.system(size: 18).bold())
                     .frame(maxWidth: .infinity, alignment: .leading)
-                Text("\(sharedModel.coins?.first?.symbol.uppercased() ?? "")")
+                Text("\(coin.symbol.uppercased())")
                     .font(.system(size: 15))
                     .foregroundColor(.gray)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 Spacer()
                 
-                Text("\(sharedModel.coins?.first?.current_price.convertToCurrency() ?? "")")
+                Text("\(sharedModel.coins?.first(where: { $0.symbol == coin.symbol})?.current_price.convertToCurrency() ?? "")")
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.system(size: 20).bold())
             }
@@ -159,20 +165,40 @@ struct HomeView: View {
             Spacer()
             
             VStack() {
-                AnimatedImage(url: URL(string: sharedModel.coins?.first?.image ?? ""))
+                AnimatedImage(url: URL(string: sharedModel.coins?.first(where: { $0.symbol == coin.symbol})?.image ?? ""))
                     .resizable()
                     .frame(width: 50, height: 50,alignment: .leading)
                 
                 Spacer()
                 
-                Text("2,35%")
-                    .foregroundColor(Color("CurrentBalance"))
+                Text(calculateProfit(boughtPrice: coin.currentPrice, currentPrice: sharedModel.coins?.first(where: { $0.symbol == coin.symbol})?.current_price))
+                    .foregroundColor(checkProfitOrLoss(boughtPrice: coin.currentPrice, currentPrice: sharedModel.coins?.first(where: { $0.symbol == coin.symbol})?.current_price))
             }
         }
         .padding()
         .frame(width: 200, height: 140)
         .background {
             RoundedRectangle(cornerRadius: 20, style: .continuous).fill(Color("White"))
+        }
+    }
+    
+    func checkProfitOrLoss(boughtPrice: Double, currentPrice: Double?) -> Color {
+        if let currentPrice = currentPrice {
+            return boughtPrice > currentPrice ? .red : .green
+        }
+        return .red
+    }
+    
+    func calculateProfit(boughtPrice: Double, currentPrice: Double?) -> String {
+        if let currentPrice = currentPrice {
+            let difference = currentPrice - boughtPrice
+            let profit = difference / currentPrice
+            let profitPercentage = profit * 100
+            
+            let result = String(format: "%.2f", profitPercentage)
+            return result + "%"
+        } else {
+            return "2.35%"
         }
     }
     

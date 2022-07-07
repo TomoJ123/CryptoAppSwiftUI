@@ -103,8 +103,9 @@ class LoginViewModel: ObservableObject {
                     //ako nije spremljen poduzmi nesto problem je
                     UserDefaults.standard.set(newUser.email, forKey: UserDefaultsKeys.mail.rawValue)
                     self?.loggedInUser = newUser
+                    self?.authSuccess = true
+                    return
                 }
-                self.authSuccess = true
                 return
             }
             

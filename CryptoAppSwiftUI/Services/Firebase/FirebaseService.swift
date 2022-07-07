@@ -4,6 +4,8 @@ import Firebase
 class FirebaseService {
     let db = Firestore.firestore()
     
+    static let shared = FirebaseService()
+    
     func login(userEmail: String, userPassword: String, completion: @escaping ((Bool, String)) -> Void) {
         Auth.auth().signIn(withEmail: userEmail, password: userPassword) { authResult, error in
             if let error = error {
@@ -66,7 +68,7 @@ class FirebaseService {
     
     func getUser(email: String, completion: @escaping ((User?) -> Void)) {
         db.collection("Users").document(email.lowercased()).getDocument { document, error in
-            #warning("problem ako je error onda nismo nasli ulogiranog usera")
+#warning("problem ako je error onda nismo nasli ulogiranog usera")
             if let _ = error {
                 completion(nil)
                 return
@@ -75,6 +77,7 @@ class FirebaseService {
             if let document = document, document.exists, let data = document.data() {
                 let user = User.toObject(dict: data)
                 completion(user)
+                return
             }
             
             completion(nil)
@@ -93,7 +96,7 @@ class FirebaseService {
         }
     }
     
-    func updateBuyOptionUserData(portfolio: PortfolioModel, transaction: TransactionModel, userMail: String,completion: @escaping ((User?, String) -> Void)) {
+    func updateBuyOptionUserData(portfolio: PortfolioModel, transaction: TransactionModel, userMail: String, completion: @escaping ((User?, String) -> Void)) {
         db.collection("Users").document(userMail.lowercased()).getDocument { [weak self] document, error in
             guard let self = self else { return }
             
@@ -109,7 +112,7 @@ class FirebaseService {
                         userToUpdate.portfolio.append(portfolio)
                     }
                     userToUpdate.transactions.append(transaction)
-                    userToUpdate.money -= Int(portfolio.virtualAmount)
+                    userToUpdate.money -= portfolio.virtualAmount
                     
                     if let updatedUser = userToUpdate.toDict() {
                         self.db.collection("Users").document(userMail.lowercased()).updateData(updatedUser) { error in
@@ -125,6 +128,68 @@ class FirebaseService {
             } else {
                 completion(nil, "Something went wrong! Try again later!")
                 return
+            }
+        }
+    }
+    
+    // bacit jos oko
+    func updateSoldOptionUserData(portfolio: PortfolioModel, transaction: TransactionModel, userMail: String, completion: @escaping ((User?, String) -> Void)) {
+        db.collection("Users").document(userMail.lowercased()).getDocument { [weak self] document, error in
+            guard let self = self else { return }
+            
+            if let document = document, document.exists, let data = document.data() {
+                let user = User.toObject(dict: data)
+                
+                if let user = user {
+                    var userToUpdate = user
+                    if let existingCoin = userToUpdate.portfolio.firstIndex(where: { $0.symbol == portfolio.symbol }) {
+                        if userToUpdate.portfolio[existingCoin].coins == portfolio.coins {
+                            userToUpdate.portfolio.remove(at: existingCoin)
+                        } else {
+                            userToUpdate.portfolio[existingCoin].coins -= portfolio.coins
+                            userToUpdate.portfolio[existingCoin].virtualAmount -= portfolio.virtualAmount
+                        }
+                    }
+                    userToUpdate.transactions.append(transaction)
+                    userToUpdate.money += portfolio.virtualAmount
+                    
+                    if let updatedUser = userToUpdate.toDict() {
+                        self.db.collection("Users").document(userMail.lowercased()).updateData(updatedUser) { error in
+                            if error == nil {
+                                completion(User.toObject(dict: updatedUser), "Your transaction is saved succesfully!")
+                            } else {
+                                completion(nil, "Something went wrong! Try again later!")
+                            }
+                            return
+                        }
+                    }
+                }
+            } else {
+                completion(nil, "Something went wrong! Try again later!")
+                return
+            }
+        }
+    }
+    
+    func getAllUsers(completion: @escaping ([User]?) -> Void) {
+        db.collection("Users").getDocuments { users, error in
+            var usersList: [User] = []
+            guard error == nil else {
+                completion(nil)
+                return 
+            }
+            
+            
+            if let users = users?.documents {
+                users.forEach { user in
+                    if user.exists, let userObject = User.toObject(dict: user.data()) {
+                        usersList.append(userObject)
+                    }
+                }
+                completion(usersList)
+                return
+            } else {
+                completion(nil)
             }
         }
     }

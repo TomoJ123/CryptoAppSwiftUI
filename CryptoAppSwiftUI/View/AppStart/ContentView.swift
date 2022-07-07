@@ -30,7 +30,7 @@ struct ContentView: View {
 @ViewBuilder
 func loggedInState(isLoggedIn: Binding<Bool>) -> some View {
     if Auth.auth().currentUser?.uid != nil || isLoggedIn.wrappedValue {
-        MainView()
+        MainView(isLoggedIn: isLoggedIn)
     } else {
         LoginView(isLoggedIn: isLoggedIn, loginData: LoginViewModel(loginService: FirebaseService()))
     }
@@ -41,11 +41,3 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
-
-
-// za logout
-// do {
-//try  Auth.auth().signOut()
-// } catch {
-//
-// }

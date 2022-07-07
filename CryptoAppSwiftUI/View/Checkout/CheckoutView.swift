@@ -43,11 +43,10 @@ struct CheckoutView: View {
                     .placeholder("Enter Amount...", when: $appModel.amount.wrappedValue.isEmpty)
                     .padding()
                     .background(RoundedRectangle(cornerRadius: 10.0).fill(Color("MainBackground")))
-                    .overlay(RoundedRectangle(cornerRadius: 10.0).strokeBorder(checkAvailableMoney() , style: StrokeStyle(lineWidth: 2.0)))
+                    .overlay(RoundedRectangle(cornerRadius: 10.0).strokeBorder(checkoutOption == .buy ? checkAvailableMoney() : checkAvailableCoins() , style: StrokeStyle(lineWidth: 2.0)))
                     .padding()
                     .foregroundColor(.black)
                 
-                #warning("ako je sell onda druga funk i text!")
                 Text("You are getting \(calculateIncome())")
                 
                 Button {
@@ -81,17 +80,35 @@ struct CheckoutView: View {
     }
     
     private func validateAmountField() -> Bool {
-        if let _ = Double(appModel.amount) {
-            return true
+        switch checkoutOption {
+        case .buy:
+            if let amount = Double(appModel.amount),
+               let availableMoney = appModel.currentUser?.money {
+                return Double(availableMoney) >= amount
+            }
+        case .sell:
+            if let amount = Double(appModel.amount),
+               let portfolioCoin = appModel.currentUser?.portfolio.first(where: { $0.symbol == selectedCoin.symbol }) {
+                return portfolioCoin.coins >= amount
+            }
         }
         return false
     }
     
-    #warning("za selanje se ovako nesmi, granat buy i sell ode")
     private func checkAvailableMoney() -> Color {
         if let availableMoney = appModel.currentUser?.money,
            let moneyToSpend = Double(appModel.amount) {
             if Double(availableMoney) >= moneyToSpend {
+                return .green
+            }
+        }
+        return .red
+    }
+    
+    private func checkAvailableCoins() -> Color {
+        if let portfolioCoin = appModel.currentUser?.portfolio.first(where: { $0.symbol == selectedCoin.symbol }),
+           let moneyToSpend = Double(appModel.amount) {
+            if portfolioCoin.coins >= moneyToSpend {
                 return .green
             }
         }
@@ -105,7 +122,10 @@ struct CheckoutView: View {
                 return "\(amount / coin.current_price) \(coin.symbol)"
             }
         } else {
-            
+            if let coin = appModel.coins?.first(where: { $0.symbol == selectedCoin.symbol}),
+               let amount = Double(appModel.amount) {
+                return "\(coin.current_price * amount)"
+            }
         }
         return "0 dolars"
     }
@@ -117,7 +137,14 @@ struct CheckoutView: View {
                 let coinsBought = amount / coin.current_price
                 let coinSymbol = coin.symbol
                 
-                appModel.buyTransactions(option: .buy, coinsAmount: coinsBought, symbol: coinSymbol, vMoney: amount)
+                appModel.buyTransactions(coinsAmount: coinsBought, symbol: coinSymbol, vMoney: amount, boughtAt: coin.current_price)
+            }
+        } else {
+            if let coin = appModel.coins?.first(where: { $0.symbol == selectedCoin.symbol }),
+               let amount = Double(appModel.amount) {
+                let vMoneyToGet = coin.current_price * amount
+                
+                appModel.sellTransaction(coinsAmount: amount, symbol: coin.symbol, vMoney: vMoneyToGet, soldAt: coin.current_price)
             }
         }
     }

@@ -33,6 +33,10 @@
 		105F23C7282687400031115A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 105F23C6282687400031115A /* GoogleService-Info.plist */; };
 		105F23CD2826AD830031115A /* Validators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 105F23CC2826AD830031115A /* Validators.swift */; };
 		106032302827067E00E7C66F /* ForgotPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1060322F2827067E00E7C66F /* ForgotPasswordViewModel.swift */; };
+		10B43A292877722B00B9C4D4 /* SwiftPieChart in Frameworks */ = {isa = PBXBuildFile; productRef = 10B43A282877722B00B9C4D4 /* SwiftPieChart */; };
+		10B43A2E287772C100B9C4D4 /* CryptoPieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B43A2D287772C100B9C4D4 /* CryptoPieChartView.swift */; };
+		10B43A30287787F200B9C4D4 /* TransactionHIstoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B43A2F287787F200B9C4D4 /* TransactionHIstoryView.swift */; };
+		10B43A322877940400B9C4D4 /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B43A312877940400B9C4D4 /* LeaderboardView.swift */; };
 		10D17ABE28158E350091B649 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D17ABD28158E350091B649 /* Extensions.swift */; };
 		10D17AC12815A4200091B649 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D17AC02815A4200091B649 /* SplashView.swift */; };
 		10D17AC82815A5710091B649 /* CryptoSplash.json in Resources */ = {isa = PBXBuildFile; fileRef = 10D17AC72815A5710091B649 /* CryptoSplash.json */; };
@@ -67,6 +71,9 @@
 		105F23C6282687400031115A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		105F23CC2826AD830031115A /* Validators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validators.swift; sourceTree = "<group>"; };
 		1060322F2827067E00E7C66F /* ForgotPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewModel.swift; sourceTree = "<group>"; };
+		10B43A2D287772C100B9C4D4 /* CryptoPieChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoPieChartView.swift; sourceTree = "<group>"; };
+		10B43A2F287787F200B9C4D4 /* TransactionHIstoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHIstoryView.swift; sourceTree = "<group>"; };
+		10B43A312877940400B9C4D4 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
 		10D17ABD28158E350091B649 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		10D17AC02815A4200091B649 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		10D17AC72815A5710091B649 /* CryptoSplash.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CryptoSplash.json; path = ../../../../../CryptoSplash.json; sourceTree = "<group>"; };
@@ -85,6 +92,7 @@
 			files = (
 				1001862A2825B4C700647E8C /* Lottie in Frameworks */,
 				100186272825B46F00647E8C /* SDWebImageSwiftUI in Frameworks */,
+				10B43A292877722B00B9C4D4 /* SwiftPieChart in Frameworks */,
 				100186222825B3CE00647E8C /* FirebaseDatabase in Frameworks */,
 				100186202825B3CE00647E8C /* FirebaseAuth in Frameworks */,
 				100186242825B3CE00647E8C /* FirebaseFirestore in Frameworks */,
@@ -219,10 +227,21 @@
 			path = ForgotPasswordView;
 			sourceTree = "<group>";
 		};
+		10B43A2A287772A700B9C4D4 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				10B43A2D287772C100B9C4D4 /* CryptoPieChartView.swift */,
+				10B43A2F287787F200B9C4D4 /* TransactionHIstoryView.swift */,
+				10B43A312877940400B9C4D4 /* LeaderboardView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		10D17AB7281585A70091B649 /* MainScreens */ = {
 			isa = PBXGroup;
 			children = (
 				100D14062836D76D00795CDE /* MainView.swift */,
+				10B43A2A287772A700B9C4D4 /* Settings */,
 				100D140E2836DC5500795CDE /* Views */,
 			);
 			path = MainScreens;
@@ -329,6 +348,7 @@
 				100186232825B3CE00647E8C /* FirebaseFirestore */,
 				100186262825B46F00647E8C /* SDWebImageSwiftUI */,
 				100186292825B4C700647E8C /* Lottie */,
+				10B43A282877722B00B9C4D4 /* SwiftPieChart */,
 			);
 			productName = CryptoAppSwiftUI;
 			productReference = 105AE9AB2809FC33005B618D /* CryptoAppSwiftUI.app */;
@@ -362,6 +382,7 @@
 				1001861E2825B3CD00647E8C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				100186252825B46E00647E8C /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 				100186282825B4C700647E8C /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				10B43A272877722B00B9C4D4 /* XCRemoteSwiftPackageReference "SwiftPieChart" */,
 			);
 			productRefGroup = 105AE9AC2809FC33005B618D /* Products */;
 			projectDirPath = "";
@@ -391,15 +412,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				10B43A2E287772C100B9C4D4 /* CryptoPieChartView.swift in Sources */,
 				100D140D2836D90700795CDE /* MarketView.swift in Sources */,
 				100D140B2836D8EF00795CDE /* SettingsView.swift in Sources */,
 				10218AA328450DBE00B652D6 /* CheckoutView.swift in Sources */,
 				103A246E28148AEF00674448 /* LineGraph.swift in Sources */,
 				10D17AD92815E3340091B649 /* CustomCorners.swift in Sources */,
+				10B43A30287787F200B9C4D4 /* TransactionHIstoryView.swift in Sources */,
 				100D14092836D8E400795CDE /* HomeView.swift in Sources */,
 				1004ECD028280B4400581763 /* ForgotPasswordView.swift in Sources */,
 				10D17AC12815A4200091B649 /* SplashView.swift in Sources */,
 				10D17AD02815DFB60091B649 /* LoginViewModel.swift in Sources */,
+				10B43A322877940400B9C4D4 /* LeaderboardView.swift in Sources */,
 				100D14072836D76D00795CDE /* MainView.swift in Sources */,
 				10D17ABE28158E350091B649 /* Extensions.swift in Sources */,
 				105AE9B12809FC33005B618D /* ContentView.swift in Sources */,
@@ -645,6 +669,14 @@
 				minimumVersion = 3.0.0;
 			};
 		};
+		10B43A272877722B00B9C4D4 /* XCRemoteSwiftPackageReference "SwiftPieChart" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ilamanov/SwiftPieChart.git";
+			requirement = {
+				kind = exactVersion;
+				version = 1.0.61;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -672,6 +704,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 100186282825B4C700647E8C /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
+		};
+		10B43A282877722B00B9C4D4 /* SwiftPieChart */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10B43A272877722B00B9C4D4 /* XCRemoteSwiftPackageReference "SwiftPieChart" */;
+			productName = SwiftPieChart;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -2,7 +2,7 @@ import Foundation
 
 struct User: Codable, Equatable {
     var firstLastName: String
-    var money: Int
+    var money: Double
     var email: String
     var portfolio: [PortfolioModel]
     var transactions: [TransactionModel]
@@ -12,12 +12,14 @@ struct PortfolioModel: Codable, Equatable {
     var symbol: String
     var virtualAmount: Double
     var coins: Double
+    var currentPrice: Double
 }
 
 struct TransactionModel: Codable, Equatable {
     var transactionType: TransactionType
+    var symbol: String
     var virtualAmount: Double
-    var coinsBought: Double
+    var coinsTransfered: Double
     var date: Date
 }
 
